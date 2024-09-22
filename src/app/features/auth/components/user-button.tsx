@@ -11,10 +11,12 @@ import {
   import { UseCurrentUser } from "../api/use-current-user"
 import { Loader, LogOut } from "lucide-react"
 import { useAuthActions } from "@convex-dev/auth/react"
+import { useCreateWorkspaceModal } from "../../workspaces/store/use-create-workspace-modal"
   
 
 export const UserButton = () => {
 
+    const [_open,setOpen] = useCreateWorkspaceModal()
 
     const {user, isLoading} = UseCurrentUser()
     if (isLoading) return <Loader className="animate-spin size-4 text-muted-foreground"/>
