@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { FcGoogle } from "react-icons/fc"
-import { FaGithub } from "react-icons/fa"
+import { FaExclamationCircle, FaGithub } from "react-icons/fa"
 import { SignInFlow } from "../types"
 import { useState } from "react"
 import { useAuthActions } from "@convex-dev/auth/react"
@@ -15,10 +15,26 @@ export const SignInCard = ({setState}: SignInCardProps) => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [pending , setPending] = useState(false)
+    const [error , setError] = useState("")
+
 
     const {signIn} = useAuthActions()
+     
+    const onPasswordSignIn = (e:React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        setPending(true)
+       signIn("password",{email,password})
+       .catch((error) => {
+        setError('Invalid email or password')
+       })
+       .finally(() => setPending(false))
+    }
+
     const handleProviderSignIn = (value : "github" | "google") => {
+        setPending(true)
        signIn(value)
+       .finally(() => setPending(false))
     }
 
 
@@ -30,32 +46,39 @@ export const SignInCard = ({setState}: SignInCardProps) => {
             <CardDescription className="text-center pb-4">
                 Use your email or another service to continue
             </CardDescription>
+            <div className="pb-4">
+            {!!error && (
+                <div className="bg-destructive/80  text-white text-sm p-3 rounded-md flex items-center gap-x-2">
+                    <FaExclamationCircle className="size-4" />
+                    {error}
+                </div>
+            )}
+            </div>
              <CardContent className="space-y-5 px-0 pb-0">
-                <form className="space-y-2.5">
+                <form onSubmit={onPasswordSignIn} className="space-y-2.5">
                   <Input
-                  disabled={false}
+                  disabled={pending}
                   value={email}
                   type="email"
                   required
                    placeholder="Email"
                    onChange={(e) => setEmail(e.target.value)}
                    />
-                    
                     <Input
-                    disabled={false}
+                    disabled={pending}
                     value={password}
                     type="password"
                     required
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
                     />
-                    <Button type="submit" className="w-full" size="lg" disabled={false}>Continue</Button>
+                    <Button type="submit" className="w-full" size="lg" disabled={pending}>Continue</Button>
                 </form>
                 <Separator />
                 <div className="flex flex-col gap-y-2.5">
                     <Button 
                     disabled={false}
-                    onClick={() => {}}
+                    onClick={() => handleProviderSignIn("google")}
                     variant="outline"
                     size="lg"
                     className="w-full relative font-semibold"

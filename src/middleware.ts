@@ -13,6 +13,7 @@ export default convexAuthNextjsMiddleware((request)=>{
     if(isPublic(request) && isAuthenticatedNextjs()){
         return nextjsMiddlewareRedirect(request,"/");
     }
+    
 });
  
 export const config = {
