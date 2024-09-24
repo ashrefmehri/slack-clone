@@ -10,6 +10,8 @@ import {
 import { Doc } from "../../../../convex/_generated/dataModel"
 import { ChevronDown, SquarePen } from "lucide-react"
 import { Hint } from "@/components/hint"
+import { PreferencesModal } from "./preferences-modal"
+import { useState } from "react"
 
   interface WorkspaceHeaderProps {
     workspace: Doc<"workspaces">
@@ -17,7 +19,10 @@ import { Hint } from "@/components/hint"
   }
 
 export const WorkspaceHeader = ({workspace , isAdmin}:WorkspaceHeaderProps) => {
+    const [open, setOpen] = useState(false)
     return (
+        <>
+        <PreferencesModal open={open} setOpen={setOpen} initialValue={workspace.name} />
         <div className="flex justify-between items-center px-4 h-[49px] gap-0.5">
          <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -54,7 +59,7 @@ export const WorkspaceHeader = ({workspace , isAdmin}:WorkspaceHeaderProps) => {
 
                 <DropdownMenuItem 
                 className="cursor-pointer py-2"
-                onClick={() => {}}
+                onClick={() => setOpen(true)}
                 >
                  Preferences
                 </DropdownMenuItem>
@@ -76,5 +81,6 @@ export const WorkspaceHeader = ({workspace , isAdmin}:WorkspaceHeaderProps) => {
          </div>
 
         </div>
+        </>
     )
 }
