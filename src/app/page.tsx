@@ -25,7 +25,7 @@ const router = useRouter()
    } ,[workspaceId,isLoading, isOpen, setIsOpen, router])
   return (
     <div className="">
-      <UserButton/>
+      
     </div>
   );
 }

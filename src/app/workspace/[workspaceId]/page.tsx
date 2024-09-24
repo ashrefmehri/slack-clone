@@ -5,6 +5,7 @@ const WorkspaceIdPage = () => {
  
   return (
     <div>
+      Workspace Page
     </div>
   )
 }

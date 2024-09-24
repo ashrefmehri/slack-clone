@@ -12,6 +12,7 @@ import {
 import { Loader, LogOut } from "lucide-react"
 import { useAuthActions } from "@convex-dev/auth/react"
 import { useCreateWorkspaceModal } from "../../workspaces/store/use-create-workspace-modal"
+import { useRouter } from "next/navigation"
   
 
 export const UserButton = () => {
@@ -24,6 +25,7 @@ export const UserButton = () => {
 
     const {name,image} = user
     const avatarFallback = name!.at(0)?.toUpperCase() 
+    const router = useRouter()
     const {signOut} = useAuthActions()
 
     return (
@@ -37,7 +39,7 @@ export const UserButton = () => {
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center" side="right" className="w-60">
-                <DropdownMenuItem onClick={()=>signOut()}>
+                <DropdownMenuItem onClick={()=>{signOut(),router.push("/")}}>
                 <LogOut className="size-4 mr-2" />
                     <span>LogOut</span>
 
